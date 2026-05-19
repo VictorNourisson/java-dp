@@ -12,24 +12,24 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class ReservationServiceImpl implements ReservationService {
+public class ReservationServiceImpl {
 
     private ClientRepository clientRepository;
 
     private TypeReservationRepository typeReservationRepository;
 
-    private DateReservationParser dateReservationParser;
+    private DateReservationParserImpl dateReservationParser;
 
-    private TarifReservationService tarifReservationService;
+    private TarifReservationServiceImpl tarifReservationService;
 
-    private ReservationFactory reservationFactory;
+    private ReservationFactoryImpl reservationFactory;
 
     @Autowired
     public ReservationServiceImpl(ClientRepository clientRepository,
                                   TypeReservationRepository typeReservationRepository,
-                                  DateReservationParser dateReservationParser,
-                                  TarifReservationService tarifReservationService,
-                                  ReservationFactory reservationFactory) {
+                                  DateReservationParserImpl dateReservationParser,
+                                  TarifReservationServiceImpl tarifReservationService,
+                                  ReservationFactoryImpl reservationFactory) {
         this.clientRepository = clientRepository;
         this.typeReservationRepository = typeReservationRepository;
         this.dateReservationParser = dateReservationParser;
@@ -37,7 +37,6 @@ public class ReservationServiceImpl implements ReservationService {
         this.reservationFactory = reservationFactory;
     }
 
-    @Override
     public Reservation creerReservation(Params params) {
         Client client = clientRepository.extraireClient(params.getIdentifiantClient());
         TypeReservation typeReservation = typeReservationRepository.extraireTypeReservation(params.getTypeReservation());

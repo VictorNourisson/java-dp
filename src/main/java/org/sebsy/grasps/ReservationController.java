@@ -5,7 +5,6 @@ import org.sebsy.grasps.daos.ClientDao;
 import org.sebsy.grasps.daos.TypeReservationDao;
 import org.sebsy.grasps.services.DateReservationParserImpl;
 import org.sebsy.grasps.services.ReservationFactoryImpl;
-import org.sebsy.grasps.services.ReservationService;
 import org.sebsy.grasps.services.ReservationServiceImpl;
 import org.sebsy.grasps.services.TarifReservationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class ReservationController {
 
-    private ReservationService reservationService;
+    private ReservationServiceImpl reservationService;
 
     public ReservationController() {
         this(new ReservationServiceImpl(
@@ -30,7 +29,7 @@ public class ReservationController {
     }
 
     @Autowired
-    public ReservationController(ReservationService reservationService) {
+    public ReservationController(ReservationServiceImpl reservationService) {
         this.reservationService = reservationService;
     }
 

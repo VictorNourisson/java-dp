@@ -7,9 +7,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class ReservationFactoryImpl implements ReservationFactory {
+public class ReservationFactoryImpl {
 
-    @Override
     public Reservation creerReservation(LocalDateTime dateReservation, int nbPlaces, Client client, double total) {
         Reservation reservation = new Reservation(dateReservation);
         reservation.setNbPlaces(nbPlaces);
