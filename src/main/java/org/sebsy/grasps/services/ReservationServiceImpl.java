@@ -4,9 +4,8 @@ import org.sebsy.grasps.Params;
 import org.sebsy.grasps.beans.Client;
 import org.sebsy.grasps.beans.Reservation;
 import org.sebsy.grasps.beans.TypeReservation;
-import org.sebsy.grasps.daos.ClientRepository;
-import org.sebsy.grasps.daos.TypeReservationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.sebsy.grasps.daos.ClientDao;
+import org.sebsy.grasps.daos.TypeReservationDao;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,32 +13,19 @@ import java.time.LocalDateTime;
 @Service
 public class ReservationServiceImpl {
 
-    private ClientRepository clientRepository;
+    private ClientDao clientDao = new ClientDao();
 
-    private TypeReservationRepository typeReservationRepository;
+    private TypeReservationDao typeReservationDao = new TypeReservationDao();
 
-    private DateReservationParserImpl dateReservationParser;
+    private DateReservationParserImpl dateReservationParser = new DateReservationParserImpl();
 
-    private TarifReservationServiceImpl tarifReservationService;
+    private TarifReservationServiceImpl tarifReservationService = new TarifReservationServiceImpl();
 
-    private ReservationFactoryImpl reservationFactory;
-
-    @Autowired
-    public ReservationServiceImpl(ClientRepository clientRepository,
-                                  TypeReservationRepository typeReservationRepository,
-                                  DateReservationParserImpl dateReservationParser,
-                                  TarifReservationServiceImpl tarifReservationService,
-                                  ReservationFactoryImpl reservationFactory) {
-        this.clientRepository = clientRepository;
-        this.typeReservationRepository = typeReservationRepository;
-        this.dateReservationParser = dateReservationParser;
-        this.tarifReservationService = tarifReservationService;
-        this.reservationFactory = reservationFactory;
-    }
+    private ReservationFactoryImpl reservationFactory = new ReservationFactoryImpl();
 
     public Reservation creerReservation(Params params) {
-        Client client = clientRepository.extraireClient(params.getIdentifiantClient());
-        TypeReservation typeReservation = typeReservationRepository.extraireTypeReservation(params.getTypeReservation());
+        Client client = clientDao.extraireClient(params.getIdentifiantClient());
+        TypeReservation typeReservation = typeReservationDao.extraireTypeReservation(params.getTypeReservation());
         LocalDateTime dateReservation = dateReservationParser.parse(params.getDateReservation());
         double total = tarifReservationService.calculerTotal(typeReservation, client, params.getNbPlaces());
 
