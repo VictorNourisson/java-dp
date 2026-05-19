@@ -5,6 +5,7 @@ import org.sebsy.grasps.beans.Client;
 import org.sebsy.grasps.beans.Reservation;
 import org.sebsy.grasps.beans.TypeReservation;
 import org.sebsy.grasps.daos.ClientDao;
+import org.sebsy.grasps.daos.ReservationDao;
 import org.sebsy.grasps.daos.TypeReservationDao;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,11 @@ public class ReservationServiceImpl {
 
     private TypeReservationDao typeReservationDao = new TypeReservationDao();
 
+    private ReservationDao reservationDao = new ReservationDao();
+
     private DateReservationParserImpl dateReservationParser = new DateReservationParserImpl();
 
     private TarifReservationServiceImpl tarifReservationService = new TarifReservationServiceImpl();
-
-    private ReservationFactoryImpl reservationFactory = new ReservationFactoryImpl();
 
     public Reservation creerReservation(Params params) {
         Client client = clientDao.extraireClient(params.getIdentifiantClient());
@@ -29,8 +30,6 @@ public class ReservationServiceImpl {
         LocalDateTime dateReservation = dateReservationParser.parse(params.getDateReservation());
         double total = tarifReservationService.calculerTotal(typeReservation, client, params.getNbPlaces());
 
-        Reservation reservation = reservationFactory.creerReservation(dateReservation, params.getNbPlaces(), client, total);
-        client.getReservations().add(reservation);
-        return reservation;
+        return reservationDao.creerReservation(dateReservation, params.getNbPlaces(), client, total);
     }
 }
